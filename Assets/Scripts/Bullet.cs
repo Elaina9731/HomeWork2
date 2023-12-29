@@ -1,18 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
-{
+{ 
+    Rigidbody2D _rb;
     public float speed = 5f;
+    public float bulletDuration = 3f;
 
-    private void Update()
+    private void Start()
     {
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
+        _rb = GetComponent<Rigidbody2D>();
+        StartCoroutine("Shooting");
+    }
 
-        if (transform.position.x > 10)
+    IEnumerator Shooting()
+    {
+        float timer = 0f;
+        while (true)
         {
-            ObjectPool.ReturnObj(this);
+            _rb.AddForce(Vector2.right * speed);
+            timer += Time.deltaTime;
+            if (timer > bulletDuration)
+                break;
+            yield return null;
         }
+
+        ObjectPool.ReturnObj(this);
     }
 }

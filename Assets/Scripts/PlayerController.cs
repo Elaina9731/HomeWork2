@@ -32,6 +32,7 @@ public class PlayerController : CharacterController
         {
             Bullet Go = ObjectPool.GetObj();
             Go.transform.position = bulletSpawnPos.transform.position;
+            
         }
     }
 }
